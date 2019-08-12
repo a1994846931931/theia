@@ -22,6 +22,7 @@ import { EditorWidget } from './editor-widget';
 import { Range, Position, Location } from './editor';
 import { EditorWidgetFactory } from './editor-widget-factory';
 import { TextEditor } from './editor';
+import * as path from 'path';
 
 export interface EditorOpenerOptions extends WidgetOpenerOptions {
     selection?: RecursivePartial<Range>;
@@ -102,7 +103,7 @@ export class EditorManager extends NavigatableWidgetOpenHandler<EditorWidget> {
     }
 
     async open(uri: URI, options?: EditorOpenerOptions): Promise<EditorWidget> {
-        const editor = await super.open(uri, options);
+        const editor = await super.open(new URI(path.normalize(uri.path.toString())), options);
         this.revealSelection(editor, options);
         return editor;
     }
